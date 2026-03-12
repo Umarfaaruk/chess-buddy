@@ -37,6 +37,10 @@ st.markdown(
 )
 
 def get_stockfish_path():
+    """
+    Find the correct Stockfish executable depending on the operating system.
+    Returns the Windows executable if local, or checks Linux paths for Streamlit Cloud.
+    """
     if platform.system() == "Windows":
         return os.path.join(os.path.dirname(__file__), "stockfish", "stockfish-windows-x86-64-avx2.exe")
     else:
@@ -45,17 +49,26 @@ def get_stockfish_path():
         except:
             return "/usr/games/stockfish"
 
+
 def init_game():
+    """
+    Initialize the game state variables in Streamlit's session_state.
+    This guarantees that the board and chess engine persist across user interactions.
+    """
     if "board" not in st.session_state:
         st.session_state.board = chess.Board()
+    
     if "game_over" not in st.session_state:
         st.session_state.game_over = False
+        
     if "message" not in st.session_state:
         st.session_state.message = "Welcome to Buddy Chess! You are playing as White. Enter a move (e.g., e2e4)."
+        
     if "stockfish" not in st.session_state:
         sf_path = get_stockfish_path()
         try:
             st.session_state.stockfish = Stockfish(path=sf_path)
+            # Make the AI extremely strong (Grandmaster level)
             st.session_state.stockfish.set_elo_rating(2800)
             st.session_state.sf_ready = True
         except Exception as e:
@@ -63,13 +76,20 @@ def init_game():
             st.session_state.sf_ready = False
             st.session_state.sf_error = str(e)
 
+
 def render_board(board):
+    """
+    Generate an SVG image of the current chessboard and render it into HTML.
+    Applies classic wood-style colors for a pleasant viewing experience.
+    """
     colors = {
         'square light': '#f0d9b5',
         'square dark': '#b58863'
     }
+    
     board_svg = chess.svg.board(board=board, colors=colors, size=400)
     b64 = base64.b64encode(board_svg.encode('utf-8')).decode("utf-8")
+    
     html = f"""
     <div class="chess-container">
         <img src="data:image/svg+xml;base64,{b64}" width="400" height="400" alt="Chess Board" />
@@ -77,37 +97,53 @@ def render_board(board):
     """
     st.write(html, unsafe_allow_html=True)
 
+
 def handle_move():
+    """
+    Process the text coordinate inputted by the user (e.g., 'e2e4').
+    Validates the move, updates the board, and immediately triggers the AI's turn.
+    """
     move_str = st.session_state.user_move_input.strip()
-    st.session_state.user_move_input = "" 
+    st.session_state.user_move_input = ""  # Clear the input box instantly
     
     if st.session_state.game_over:
         return
 
     board = st.session_state.board
+    
     try:
+        # Convert string to a chess move
         move = chess.Move.from_uci(move_str)
+        
+        # Check if the move violates any chess rules
         if move in board.legal_moves:
             board.push(move)
             st.session_state.message = f"You played {move_str}."
             
             check_game_state()
             
+            # If the user's move didn't end the game, it's Buddy Chess's turn!
             if not st.session_state.game_over:
                 ai_move()
         else:
-            st.session_state.message = f"Invalid move: {move_str} is not legal. Try again."
+            st.session_state.message = f"Invalid move: {move_str} is not legal on this board. Try again."
+            
     except ValueError:
-        st.session_state.message = f"Invalid format: '{move_str}'. Use coordinates like e2e4."
+        st.session_state.message = f"Invalid format: '{move_str}'. Please use standard format like e2e4."
+
 
 def ai_move():
+    """
+    Ask Buddy Chess (Stockfish) to analyze the board and execute its best move.
+    """
     if not st.session_state.get("sf_ready", False):
-        st.session_state.message = "Buddy Chess engine not available. Please install Stockfish."
+        st.session_state.message = "Buddy Chess engine not available right now."
         return
 
     sf = st.session_state.stockfish
     board = st.session_state.board
     
+    # Sync the engine's board state with our python-chess board
     sf.set_fen_position(board.fen())
     best_move = sf.get_best_move()
     
@@ -116,24 +152,37 @@ def ai_move():
         st.session_state.message = f"Buddy Chess played {best_move}."
         check_game_state()
     else:
-        st.session_state.message = "Buddy Chess cannot make a move."
+        st.session_state.message = "Buddy Chess cannot find a valid move."
+
 
 def check_game_state():
+    """
+    Look for Checkmate, Stalemate, or Draw conditions after a move is made,
+    and update the user messages accordingly.
+    """
     board = st.session_state.board
+    
     if board.is_checkmate():
         st.session_state.game_over = True
         winner = "Buddy Chess" if board.turn == chess.WHITE else "You"
-        st.session_state.message = f"Checkmate! {winner} won!"
+        st.session_state.message = f"Checkmate! {winner} won the game!"
+        
     elif board.is_stalemate():
         st.session_state.game_over = True
-        st.session_state.message = "Game drawn by stalemate."
+        st.session_state.message = "Game drawn by stalemate. Safe game!"
+        
     elif board.is_insufficient_material():
         st.session_state.game_over = True
-        st.session_state.message = "Game drawn due to insufficient material."
+        st.session_state.message = "Game drawn! Neither side has enough pieces to win."
+        
     elif board.is_check():
         st.session_state.message += " Check!"
 
+
 def reset_game():
+    """
+    Wipe the board clean and restart a brand new game from scratch.
+    """
     st.session_state.board = chess.Board()
     st.session_state.game_over = False
     st.session_state.message = "Game reset. You are playing as White. Enter a move (e.g., e2e4)."
