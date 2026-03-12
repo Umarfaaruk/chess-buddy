@@ -1,19 +1,20 @@
-# 🎈 Blank app template
+# ♟️ Buddy Chess
 
-A simple Streamlit app template for you to modify!
+A Python-based AI chess application built with [Streamlit](https://streamlit.io/) and powered by the strong Stockfish engine.
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://blank-app-template.streamlit.app/)
+Buddy Chess lets you play a fast, responsive chess game with classic aesthetics. Enter your standard chess coordinates (e.g., `e2e4`) and the Buddy Chess engine will calculate its next move immediately.
 
-### How to run it on your own machine
+## Streamlit Cloud Deployment
 
-1. Install the requirements
+Buddy Chess is explicitly designed to be deployed **exclusively via Streamlit Community Cloud**. It comes correctly bundled with the `requirements.txt` (for Python dependencies like python-chess) and a custom `packages.txt` (for downloading the Linux Stockfish engine securely in the cloud).
 
-   ```
-   $ pip install -r requirements.txt
-   ```
+**To deploy the app:**
+1. Log in to [Streamlit Community Cloud](https://share.streamlit.io/).
+2. Click **New app**.
+3. Fill in the repository details:
+   - **Repository:** `Umarfaaruk/chess-buddy`
+   - **Branch:** `main`
+   - **Main file path:** `app.py`
+4. Click **Deploy!**
 
-2. Run the app
-
-   ```
-   $ streamlit run streamlit_app.py
-   ```
+The cloud server will automatically read the `packages.txt` file, install the stockfish Debian package securely via apt-get, install the Python requirements, and start the application instantly. No complex web hosting setup is required.
