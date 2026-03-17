@@ -68,7 +68,7 @@ def init_game():
         st.session_state.game_over = False
         
     if "message" not in st.session_state:
-        st.session_state.message = "Welcome to Chess Buddy! You are playing as White. Enter a move (e.g., e2e4)."
+        st.session_state.message = "Welcome to Chess Buddy! You are playing as White."
         
     if "stockfish" not in st.session_state:
         sf_path = get_stockfish_path()
