@@ -15,10 +15,10 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-color: #f7f7f7;
+        background-color: #2b2b2b;
     }
     h1 {
-        color: #2c3e50;
+        color: #f0f0f0;
         text-align: center;
         font-family: 'Georgia', serif;
     }
@@ -27,9 +27,15 @@ st.markdown(
         justify-content: center;
         margin: 20px 0;
         padding: 10px;
-        background-color: #ffffff;
+        background-color: #3b3b3b;
         border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    }
+    p {
+        color: #e0e0e0;
+    }
+    .stTextInput > div > div > input {
+        color: #e0e0e0;
     }
     </style>
     """,
@@ -62,7 +68,7 @@ def init_game():
         st.session_state.game_over = False
         
     if "message" not in st.session_state:
-        st.session_state.message = "Welcome to Buddy Chess! You are playing as White. Enter a move (e.g., e2e4)."
+        st.session_state.message = "Welcome to Chess Buddy! You are playing as White. Enter a move (e.g., e2e4)."
         
     if "stockfish" not in st.session_state:
         sf_path = get_stockfish_path()
@@ -122,7 +128,7 @@ def handle_move():
             
             check_game_state()
             
-            # If the user's move didn't end the game, it's Buddy Chess's turn!
+            # If the user's move didn't end the game, it's Chess Buddy's turn!
             if not st.session_state.game_over:
                 ai_move()
         else:
@@ -134,10 +140,10 @@ def handle_move():
 
 def ai_move():
     """
-    Ask Buddy Chess (Stockfish) to analyze the board and execute its best move.
+    Ask Chess Buddy (Stockfish) to analyze the board and execute its best move.
     """
     if not st.session_state.get("sf_ready", False):
-        st.session_state.message = "Buddy Chess engine not available right now."
+        st.session_state.message = "Chess Buddy engine not available right now."
         return
 
     sf = st.session_state.stockfish
@@ -149,10 +155,10 @@ def ai_move():
     
     if best_move:
         board.push(chess.Move.from_uci(best_move))
-        st.session_state.message = f"Buddy Chess played {best_move}."
+        st.session_state.message = f"Chess Buddy played {best_move}."
         check_game_state()
     else:
-        st.session_state.message = "Buddy Chess cannot find a valid move."
+        st.session_state.message = "Chess Buddy cannot find a valid move."
 
 
 def check_game_state():
@@ -164,7 +170,7 @@ def check_game_state():
     
     if board.is_checkmate():
         st.session_state.game_over = True
-        winner = "Buddy Chess" if board.turn == chess.WHITE else "You"
+        winner = "Chess Buddy" if board.turn == chess.WHITE else "You"
         st.session_state.message = f"Checkmate! {winner} won the game!"
         
     elif board.is_stalemate():
@@ -189,11 +195,11 @@ def reset_game():
 
 init_game()
 
-st.title("♟️ Buddy Chess")
-st.write("Play against Buddy Chess! Enter standard coordinates (e.g., e2e4) and press Enter.")
+st.title("♟️ Chess Buddy")
+st.write("Play against Chess Buddy! Enter standard coordinates (e.g., e2e4) and press Enter.")
 
 if not st.session_state.get("sf_ready", False):
-    st.error(f"Buddy Chess engine failed to load: {st.session_state.get('sf_error', 'Target Stockfish not found')}. Check your Stockfish installation.")
+    st.error(f"Chess Buddy engine failed to load: {st.session_state.get('sf_error', 'Target Stockfish not found')}. Check your Stockfish installation.")
 
 render_board(st.session_state.board)
 
