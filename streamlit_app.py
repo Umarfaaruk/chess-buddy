@@ -195,7 +195,7 @@ def reset_game():
 
 init_game()
 
-st.title("♟️ Chess Buddy")
+st.title("Chess Buddy")
 st.write("Play against Chess Buddy! Enter standard coordinates (e.g., e2e4) and press Enter.")
 
 if not st.session_state.get("sf_ready", False):

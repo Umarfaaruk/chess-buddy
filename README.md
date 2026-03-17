@@ -1,20 +1,18 @@
-# ♟️ Buddy Chess
+# Chess Buddy
 
-A Python-based AI chess application built with [Streamlit](https://streamlit.io/) and powered by the strong Stockfish engine.
+Chess Buddy is a Python-based web application leveraging the Streamlit framework and the Stockfish chess engine to provide an interactive, AI-driven chess experience. The interface calculates and executes optimal counter-moves in real-time based on standard algebraic chess notation input (e.g., `e2e4`).
 
-Buddy Chess lets you play a fast, responsive chess game with classic aesthetics. Enter your standard chess coordinates (e.g., `e2e4`) and the Buddy Chess engine will calculate its next move immediately.
+## Deployment Instructions
 
-## Streamlit Cloud Deployment
+This application is configured for deployment on Streamlit Community Cloud. Dependencies and environment requirements are managed via `requirements.txt` for Python packages and `packages.txt` for system-level dependencies (such as the Stockfish engine).
 
-Buddy Chess is explicitly designed to be deployed **exclusively via Streamlit Community Cloud**. It comes correctly bundled with the `requirements.txt` (for Python dependencies like python-chess) and a custom `packages.txt` (for downloading the Linux Stockfish engine securely in the cloud).
-
-**To deploy the app:**
-1. Log in to [Streamlit Community Cloud](https://share.streamlit.io/).
-2. Click **New app**.
-3. Fill in the repository details:
+**Deployment Steps:**
+1. Navigate to [Streamlit Community Cloud](https://share.streamlit.io/).
+2. Select **New app**.
+3. Provide the following repository parameters:
    - **Repository:** `Umarfaaruk/chess-buddy`
    - **Branch:** `main`
    - **Main file path:** `streamlit_app.py`
 4. Click **Deploy!**
 
-The cloud server will automatically read the `packages.txt` file, install the stockfish Debian package securely via apt-get, install the Python requirements, and start the application instantly. No complex web hosting setup is required.
+Upon deployment, the environment will automatically provision the required Debian packages, install dependencies, and initialize the application.
