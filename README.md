@@ -14,7 +14,7 @@ Buddy Chess is explicitly designed to be deployed **exclusively via Streamlit Co
 3. Fill in the repository details:
    - **Repository:** `Umarfaaruk/chess-buddy`
    - **Branch:** `main`
-   - **Main file path:** `app.py`
+   - **Main file path:** `streamlit_app.py`
 4. Click **Deploy!**
 
 The cloud server will automatically read the `packages.txt` file, install the stockfish Debian package securely via apt-get, install the Python requirements, and start the application instantly. No complex web hosting setup is required.
