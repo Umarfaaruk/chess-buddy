@@ -1,18 +1,50 @@
+
 # Chess Buddy
 
-Chess Buddy is a Python-based web application leveraging the Streamlit framework and the Stockfish chess engine to provide an interactive, AI-driven chess experience. The interface calculates and executes optimal counter-moves in real-time based on standard algebraic chess notation input (e.g., `e2e4`).
+**Live Application:** https://chess-buddy.streamlit.app/
 
-## Deployment Instructions
+Chess Buddy is a web-based chess application built with Streamlit. It provides a straightforward interface for users to play chess against an AI opponent using standard coordinate notation.
 
-This application is configured for deployment on Streamlit Community Cloud. Dependencies and environment requirements are managed via `requirements.txt` for Python packages and `packages.txt` for system-level dependencies (such as the Stockfish engine).
+## How to Play
 
-**Deployment Steps:**
-1. Navigate to [Streamlit Community Cloud](https://share.streamlit.io/).
-2. Select **New app**.
-3. Provide the following repository parameters:
-   - **Repository:** `Umarfaaruk/chess-buddy`
-   - **Branch:** `main`
-   - **Main file path:** `streamlit_app.py`
-4. Click **Deploy!**
+The game relies on text-based coordinate inputs for piece movement.
 
-Upon deployment, the environment will automatically provision the required Debian packages, install dependencies, and initialize the application.
+To make a move, enter the starting square and the destination square in the input field.
+
+  * **Example 1:** To move a pawn from e2 to e4, type `e2e4`.
+  * **Example 2:** To move a knight from b1 to c3, type `b1c3`.
+
+The board will automatically update, and the AI will respond with its move.
+
+## Local Installation
+
+To run this project on your local machine, ensure you have Python installed, and then follow these steps:
+
+1.  **Clone the repository:**
+
+    ```bash
+    git clone https://github.com//Umarfaaruk/chess-buddy.git
+    cd chess-buddy
+    ```
+
+2.  **Install dependencies:**
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+3.  **Start the application:**
+
+    ```bash
+    streamlit_app.py
+    ```
+
+## Technologies Used
+
+  * **Python:** Core application logic.
+  * **Streamlit:** Frontend web framework.
+  * **python-chess:** Move validation and board generation.
+
+## Author
+
+Mahmmed Umar Faaruk.
